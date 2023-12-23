@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\SaminrayApiExam.Api.props" />
+</Project>
