@@ -22,6 +22,8 @@ namespace SaminrayApiExam.Api.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginModel login)
         {
+            if(!ModelState.IsValid)
+            return BadRequest(ModelState);
             if (login.UserName == "admin" && login.Password == "admin")
             {
                 var user = new AuthenticateUser()

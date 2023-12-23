@@ -22,6 +22,7 @@ namespace SaminrayApiExam.Api.Controllers
         [HttpGet]
         public IActionResult GetInventoryReport(bool sortByPrice = false)
         {
+            
             var res = _poductService.GetProductCounts();
             if (sortByPrice)
             {

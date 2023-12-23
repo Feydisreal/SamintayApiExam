@@ -10,45 +10,50 @@ namespace SaminrayApiExam.Api.Controllers
     [ApiController]
     public class ProductGroupController : ControllerBase
     {
-        private readonly IProductService _poductService;
-        public ProductGroupController(IProductService productService)
+        private readonly IProductGroupService _groupService;
+        public ProductGroupController(IProductGroupService group)
         {
-            _poductService = productService;
+            _groupService = group;
         }
         [Authorize]
         [HttpPost]
         public IActionResult AddProductGroup([FromBody] ProductGroupDTO group)
         {
-
-            return Ok(_poductService.AddProductGroup(group));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(_groupService.AddProductGroup(group));
         }
 
         [Authorize]
         [HttpGet]
         public IActionResult GetProductGroups()
         {
-            return Ok(_poductService.GetProductGroups());
+            return Ok(_groupService.GetProductGroups());
         }
 
         [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetProductGroupById(int id)
         {
-            return Ok(_poductService.GetProductGroupById(id));
+           
+            return Ok(_groupService.GetProductGroupById(id));
         }
 
         [Authorize]
         [HttpPut("{id}")]
         public IActionResult EditProductGroupById(int id, [FromBody] ProductGroupDTO group)
         {
-            return Ok(_poductService.EditProductGroup(group, id));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(_groupService.EditProductGroup(group, id));
         }
 
         [Authorize]
         [HttpDelete("{id}")]
         public IActionResult DeleteProductGroupById(int id)
         {
-            return Ok(_poductService.DeleteProductGroup(id));
+           
+            return Ok(_groupService.DeleteProductGroup(id));
         }
     }
 }

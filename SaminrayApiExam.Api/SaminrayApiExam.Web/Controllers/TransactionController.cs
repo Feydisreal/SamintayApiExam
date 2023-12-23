@@ -12,25 +12,29 @@ namespace SaminrayApiExam.Api.Controllers
     public class TransactionController : ControllerBase
     {
 
-        private readonly ITransactionService _transactionService;
-        public TransactionController( ITransactionService transactionService)
+        private readonly IOrderService _orderService;
+        private readonly IReceiptService _receiptService;
+        public TransactionController( IOrderService orderService , IReceiptService receiptService)
         {
-            _transactionService = transactionService;
+            _orderService = orderService;
+            _receiptService = receiptService;
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult AddReceipt([FromBody] ReceiptDTO receipt)
         {
-
-            return Ok(_transactionService.AddReceipt(receipt));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(_receiptService.AddReceipt(receipt));
         }
         [Authorize]
         [HttpPost]
         public IActionResult AddOrder([FromBody] OrderDTO order)
         {
-
-            return Ok(_transactionService.AddOrder(order));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(_orderService.AddOrder(order));
         }
     }
 }

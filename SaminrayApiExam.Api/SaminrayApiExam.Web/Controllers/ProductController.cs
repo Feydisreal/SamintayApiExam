@@ -13,8 +13,10 @@ namespace SaminrayApiExam.Api.Controllers
     {
 
         private readonly IProductService _poductService;
-        public ProductController(IProductService productService)
+        private readonly IProductGroupService _groupService;
+        public ProductController(IProductService productService,IProductGroupService groupService)
         {
+            _groupService = groupService;
             _poductService = productService;
         }
 
@@ -22,7 +24,12 @@ namespace SaminrayApiExam.Api.Controllers
         [HttpPost]
         public IActionResult AddProduct([FromBody] ProductDTO product)
         {
-
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            if (product.ProductGroupId == 0 || !_groupService.CheckIfGroupIdExistById(product.ProductGroupId))
+            {
+                return Ok(new { ProductGroupId = "Please Write a correct ProductGroupId Number" });
+            }
             return Ok(_poductService.AddProduct(product));
         }
 
@@ -30,6 +37,7 @@ namespace SaminrayApiExam.Api.Controllers
         [HttpGet]
         public IActionResult GetProducts()
         {
+            
             return Ok(_poductService.products());
         }
 
@@ -44,6 +52,9 @@ namespace SaminrayApiExam.Api.Controllers
         [HttpPut("{id}")]
         public IActionResult EditProductById(int id, [FromBody] ProductDTO product)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             return Ok(_poductService.EditProduct(product, id));
         }
 
@@ -51,6 +62,7 @@ namespace SaminrayApiExam.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteProductById(int id)
         {
+          
             return Ok(_poductService.DeleteProduct(id));
         }
        
