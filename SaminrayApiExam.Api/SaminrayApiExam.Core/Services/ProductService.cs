@@ -71,7 +71,9 @@ namespace SaminrayApiExam.Core.Services
         }
         public List<ProductsDTO> products()
         {
-            var res = _context.Products.ToList();
+            var res = _context.Products
+                .Include(x=> x.ProductGroup)
+                .ToList();
             var final = new List<ProductsDTO>();
             foreach (var item in res)
             {
